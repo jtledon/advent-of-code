@@ -1,10 +1,49 @@
+use std::collections::BinaryHeap;
 use std::fs;
 use std::io;
 
 fn main() {
-    let filename: &str = "adventofcode.com_2022_day_1_input.txt";
+    let filename: &str = "../../input-files/adventofcode.com_2022_day_1_input.txt";
     let _ = part1(filename);
+    let _ = part1_take2(filename);
+    let _ = part2_take2(filename);
 }
+
+
+fn part1_take2(filepath: &str) -> () {
+    let data = fs::read_to_string(filepath).ok().unwrap();
+    let res: i32 = data
+                .split("\n\n")
+                .map(|arr| 
+                     arr
+                        .lines()
+                        .map(|x| x.parse::<i32>().unwrap())
+                        .sum()
+                    )
+                .max()
+                .unwrap();
+    println!("{:?}", res);
+}
+
+fn part2_take2(filepath: &str) -> () {
+    let data = fs::read_to_string(filepath).ok().unwrap();
+    let res: Vec<u32> = data
+                .split("\n\n")
+                .map(|arr| 
+                     arr
+                        .lines()
+                        .map(|x| x.parse::<u32>().unwrap())
+                        .sum()
+                    )
+                .collect::<Vec<u32>>();
+    let heap = BinaryHeap::from(res);
+    let maxes = heap.iter().take(3);
+    dbg!(heap);
+    // println!("{:?}", res[0..3]);
+}
+
+
+
 
 
 fn part1(filepath: &str) -> () {
