@@ -1,4 +1,4 @@
-use std::ops::Range;
+use std::str::FromStr;
 
 fn main() {
     let data = read_data();
@@ -33,15 +33,71 @@ fn read_data() -> String {
     return std::fs::read_to_string(filepath).ok().unwrap();
 }
 
+#[derive(Debug, Clone, Copy)]
+struct Rng {
+    start: u32,
+    stop: u32
+}
+
+#[derive(Debug, Clone, Copy)]
 struct Ranges {
-    first: Range,
-    second: Range
+    l: Rng,
+    r: Rng
 }
 
-fn part1(data: &String) /* -> u32 */ {
+struct ParseRangeEror;
+
+impl FromStr for Ranges {
+    type Err = ParseRangeEror;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let ranges = s.split(',');
+        let nums: Vec<Vec<u32>> = ranges.map(|rng| rng
+                                    .split('-')
+                                    .map(|num| num.parse::<u32>().unwrap() )
+                                    .collect()
+                        ).collect();
+        let ranges_struct = Ranges {
+            l: Rng {
+                start: nums[0][0],
+                stop: nums[0][1]
+            },
+            r: Rng {
+                start: nums[1][0],
+                stop: nums[1][1]
+            }
+        };
+        Ok(ranges_struct)
+    }
 
 }
 
-fn part2(data: &String) /* -> u32 */ {
+fn full_overlap(first: &Rng, second: &Rng) -> bool {
+    first.start <= second.start && first.stop >= second.stop
+}
 
+fn part1(data: &String) -> usize {
+    let parsed = data
+        .lines()
+        .map(|line| line.parse::<Ranges>().ok().unwrap())
+        .filter(|ranges| full_overlap(&ranges.l, &ranges.r) || full_overlap(&ranges.r, &ranges.l))
+        .collect::<Vec<Ranges>>()
+        .len();
+    return parsed;
+}
+
+
+fn partial_overlap(first: &Rng, second: &Rng) -> bool {
+    (second.start..=second.stop).contains(&first.start) ||
+    (second.start..=second.stop).contains(&first.stop)
+}
+
+fn part2(data: &String) -> usize {
+    let parsed = data
+        .lines()
+        .map(|line| line.parse::<Ranges>().ok().unwrap())
+        .filter(|ranges| partial_overlap(&ranges.l, &ranges.r) || partial_overlap(&ranges.r, &ranges.l))
+        .collect::<Vec<Ranges>>()
+        .len();
+    return parsed;
 }
