@@ -1,3 +1,5 @@
+use std::vec;
+
 fn main() {
     let data = read_data();
     println!("{:?}", part1(&data));
@@ -31,9 +33,22 @@ fn read_data() -> String {
     return std::fs::read_to_string(filepath).ok().unwrap();
 }
 
+fn generate_stacks(data: &String) -> Vec<Vec<&str>> {
+    data
+        .split("\n\n")
+        .collect::<Vec<&str>>()[0]
+        .chars()
+        .chunks(3)
+       ; 
+
+    return vec!(vec!("hi"))
+
+}
+
 fn part1(data: &String) /* -> u32 */ {
+    let stacks = generate_stacks(data);
 }
 
 
-fn part2(data: &String) /* -> usize */ {
+fn part2(data: &String) /* -> u32 */ {
 }
