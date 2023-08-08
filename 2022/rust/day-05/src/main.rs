@@ -68,11 +68,10 @@ fn horizontal_crates(input: &str) -> IResult<&str, Vec< Vec<Option <&str> > > > 
             parse_line
         )(input)?;
     Ok((input, res))
-
 }
 
 fn horizontal_to_vertical_stacks(horizontal: Vec<Vec<Option<&str>>>) -> Vec<Vec<&str>>{
-    println!("{horizontal:#?}");
+    // println!("{horizontal:#?}");
     let mut agg = vec![];
     for j in 0..horizontal[0].len() {
         let mut vertical_stack = vec![];
@@ -90,7 +89,32 @@ fn horizontal_to_vertical_stacks(horizontal: Vec<Vec<Option<&str>>>) -> Vec<Vec<
     agg
 }
 
-fn part1(data: &String) /* -> u32 */ {
+#[derive(Debug)]
+struct Command {
+    repetition: u8,
+    from: u8,
+    to: u8
+}
+
+fn parse_command(input: &str) -> IResult<&str, Command> {
+    let (input, _) = nom::bytes::complete::tag("move ")(input)?;
+    let (input, repetition) = nom::character::complete::u8(input)?;
+    let (input, _) = nom::bytes::complete::tag(" from ")(input)?;
+    let (input, from) = nom::character::complete::u8(input)?;
+    let (input, _) = nom::bytes::complete::tag(" to ")(input)?;
+    let (input, to) = nom::character::complete::u8(input)?;
+    Ok((input, Command { repetition, from, to } ))
+}
+
+fn parse_commands(input: &str) -> IResult<&str, Vec<Command>> {
+    let (input, res) = nom::multi::separated_list1(
+            nom::character::complete::newline,
+            parse_command
+        )(input)?;
+    Ok((input, res))
+}
+
+fn part1(data: &String) {
 
     let input_sections = data.split("\n\n").collect::<Vec<&str>>();
     let mut stacks_input = input_sections[0];
@@ -98,8 +122,20 @@ fn part1(data: &String) /* -> u32 */ {
     let commands_input = input_sections[1];
 
     let horizontal_stacks = horizontal_crates(stacks_input).ok().unwrap().1;
-    let stacks = horizontal_to_vertical_stacks(horizontal_stacks);
+    let mut stacks = horizontal_to_vertical_stacks(horizontal_stacks);
 
+    let commands = parse_commands(commands_input).ok().unwrap().1;
+    
+    for command in commands {
+        // println!("{command:?}");
+        for _ in 0..command.repetition {
+            let val = stacks[command.from as usize - 1].pop().unwrap();
+            stacks[command.to as usize - 1].push(val);
+        }
+    }
+
+    stacks.iter().for_each(|stack| print!("{}", stack[stack.len()-1]));
+    println!();
 }
 
 
