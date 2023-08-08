@@ -1,7 +1,5 @@
-use std::{vec, cmp::Reverse};
-use nom::{
-    IResult 
-};
+use std::vec;
+use nom::IResult;
 
 fn main() {
     let data = read_data();
@@ -138,6 +136,31 @@ fn part1(data: &String) {
     println!();
 }
 
+fn part2(data: &String) {
 
-fn part2(data: &String) /* -> u32 */ {
+    let input_sections = data.split("\n\n").collect::<Vec<&str>>();
+    let mut stacks_input = input_sections[0];
+    stacks_input = &stacks_input[..stacks_input.len()-1];
+    let commands_input = input_sections[1];
+
+    let horizontal_stacks = horizontal_crates(stacks_input).ok().unwrap().1;
+    let mut stacks = horizontal_to_vertical_stacks(horizontal_stacks);
+
+    let commands = parse_commands(commands_input).ok().unwrap().1;
+    
+    for command in commands {
+        // let grabbed = stacks[command.from as usize - 1].iter().take(command.repetition as usize).cloned();
+        // stacks[command.to as usize - 1].extend(grabbed);
+        let mut temp: Vec<&str> = vec!();
+        for _ in 0..command.repetition {
+            let val = stacks[command.from as usize - 1].pop().unwrap();
+            temp.push(val)
+        }
+        temp.reverse();
+        stacks[command.to as usize - 1].extend(temp);
+    }
+
+    stacks.iter().for_each(|stack| print!("{}", stack[stack.len()-1]));
+    println!();
 }
+
