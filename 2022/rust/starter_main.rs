@@ -35,5 +35,5 @@ fn part1(data: &String) /* -> u32 */ {
 }
 
 
-fn part2(data: &String) /* -> usize */ {
+fn part2(data: &String) /* -> u32 */ {
 }
