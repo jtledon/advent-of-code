@@ -143,14 +143,22 @@ fn parse_data(input: &str) -> nom::IResult<&str, Vec<Option<Line>>> {
             nom::character::complete::newline,
             parse_line
         )(input)?;
-    for line in lines.clone() {
-        println!("{:?}", line);
-    }
+    // for line in lines.clone() {
+    //     println!("{:?}", line);
+    // }
     Ok((input, lines))
 }
 
 fn part1(data: &String) /* -> u32 */ {
-    let _ = parse_data(data);
+    let (_, parsed_lines) = parse_data(data).unwrap();
+    for line in parsed_lines {
+        match line.unwrap() {
+            Line::FILE(file) => {println!("{file:?}")},
+            Line::DIR(dir) => {println!("{dir:?}")},
+            Line::COMMAND(cmd) => {println!("{cmd:?}")}
+
+        }
+    }
 }
 
 
