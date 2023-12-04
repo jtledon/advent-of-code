@@ -2,3 +2,7 @@ Reference for how to get the session key for login access:
     https://www.reddit.com/r/adventofcode/comments/a2vonl/how_to_download_inputs_with_a_script/
 
 parallel curl --cookie "session=53616c7465645f5f3a1f4c1492fda0b48389692f29f773ed76a2d3357c52623ff7ecc4a2e73007fbe48313481efc3d2f6596e091c7366006701af8bfd90f7195" -o adventofcode.com_{1}_day_{2}_input.txt https://adventofcode.com/{1}/day/{2}/input ::: {2015..2022} ::: {1..25}
+
+
+for one off downloads:
+curl --cookie "session=53616c7465645f5fd8e3c6563e66404e88cb72e5f7f508172a5d908746dc149ca2c3612799e2d35ff9650ae6a9dcc163f561107b3037f83e6957ade119ecb462" -o adventofcode.com_2023_day_2_input.txt https://adventofcode.com/2023/day/2/input
