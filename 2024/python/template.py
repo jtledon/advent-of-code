@@ -1,6 +1,6 @@
 import math, string
-import re
-import os
+import re, os
+# import numpy as np
 from pprint import pprint
 
 def part1(lines):
