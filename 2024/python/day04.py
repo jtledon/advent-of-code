@@ -23,7 +23,7 @@ def part2(lines):
 
 if __name__ == "__main__":
     filename = os.path.basename(__file__)
-    dayNumber = re.sub(r"^.*(\d+)\.py$", r"\1", filename)
+    dayNumber = re.sub(r"^.*?(\d+)\.py$", r"\1", filename)
     yearNumber = os.path.basename(os.path.dirname(os.path.dirname(__file__)))
 
     inputFile = os.path.join(
