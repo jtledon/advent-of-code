@@ -5,6 +5,17 @@ from pprint import pprint
 import functools, itertools
 
 def part1(lines):
+    lines = np.array([list(x) for x in lines])
+    variations = list()
+    for _ in range(4):
+        lines = np.rot90(lines)
+        variations.append("".join(lines.flatten()))
+    for i in range(len(lines)//2):
+        if i == 0:
+            diag = np.diagonal(lines, offset=i)
+        else:
+            diag = np.diagonal(lines, offset=i) + np.diagonal(lines, offset=-i)
+    print(len(variations))
     return
 
 def part2(lines):
