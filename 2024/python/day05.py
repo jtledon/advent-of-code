@@ -45,31 +45,38 @@ def part2(lines):
     rules = list(map(lambda x: list(map(int, x)), rules))
     # print(rules)
 
-    pages = lines[splitAt+1:]
-    pages = map(lambda x: x.split(','), pages)
-    pages = list(map(lambda x: list(map(int, x)), pages))
+    updates = lines[splitAt+1:]
+    updates = map(lambda x: x.split(','), updates)
+    updates = list(map(lambda x: list(map(int, x)), updates))
     # pprint(pages)
 
     medianSum = 0
-    for page in pages:
-        for (num1, num2) in rules:
-            if num1 not in page or num2 not in page:
-                # print(f"missing rule number in page: {num1=} {num2=} {page=}")
-                continue
 
-            inOrder = page.index(num1) < page.index(num2)
-            # print(page.index(num1), page.index(num2), inOrder)
+    for update in updates:
 
-            if inOrder:
-                # print(f"{page=} skip this rule, its in order: {num1=}|{num2=}")
-                continue
+        ruleBroken = True
+        while (ruleBroken):
+            ruleBroken = False
 
-            # num2 is too late. put it JUST before num1
-            page = page[:page.index(num1)] + page[page.index(num1)+1:]
-            page.insert(page.index(num2), num1)
+            for (page1, page2) in rules:
+                if page1 not in update or page2 not in update:
+                    # one or both pages of the rule not in the update. Skip rule
+                    continue
 
-        else:
-            medianSum += page[len(page)//2]
+                inOrder = update.index(page1) < update.index(page2)
+                if inOrder:
+                    # both pages of the rule are in the update, and are in order
+                    continue
+                else:
+                    # rule was broken, try to fix it and mark it as needing another sort
+                    ruleBroken = True
+
+                # num2 is too late. put it JUST before num1
+                update = update[:update.index(page1)] + update[update.index(page1)+1:]
+                update.insert(update.index(page2), page1)
+
+            else:
+                medianSum += update[len(update)//2]
 
     return medianSum
 
