@@ -4,6 +4,7 @@ import numpy as np
 import functools, itertools
 from pprint import pprint
 from collections import Counter
+from collections import defaultdict
 
 sys.path.append('..')
 from utils import custom_timer
