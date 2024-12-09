@@ -3,6 +3,7 @@ import re, os, sys
 import numpy as np
 import functools, itertools
 from pprint import pprint
+from collections import Counter
 
 sys.path.append('..')
 from utils import custom_timer
