@@ -1,14 +1,23 @@
 import math, string
-import re, os
+import re, os, sys
 import numpy as np
-from pprint import pprint
 import functools, itertools
+from pprint import pprint
 
+sys.path.append('..')
+from utils import custom_timer
+
+# @custom_timer
 def part1(lines):
     return
 
+
+
+# @custom_timer
 def part2(lines):
     return
+
+
 
 if __name__ == "__main__":
     filename = os.path.basename(__file__)

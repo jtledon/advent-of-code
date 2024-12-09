@@ -1,8 +1,12 @@
 import math, string
-import re, os
-# import numpy as np
+import re, os, sys
+import numpy as np
 from pprint import pprint
 
+sys.path.append('..')
+from utils import custom_timer
+
+@custom_timer
 def part1(lines):
     pairs = map(lambda x: re.split(r"\s+", x), lines)
 
@@ -18,6 +22,13 @@ def part1(lines):
 
     diff = map(lambda x: abs(x[0]-x[1]), matching)
 
+    return sum(diff)
+
+@custom_timer
+def part1v2(lines):
+    pairs = np.array([list(map(int, x.strip().split('   '))) for x in lines])
+    matched = zip(sorted(pairs[:,0]), sorted(pairs[:,1]))
+    diff = [abs(x[0] - x[1]) for x in matched]
     return sum(diff)
 
 def part2(lines):
@@ -50,5 +61,7 @@ if __name__ == "__main__":
         lines = f.readlines()
         lines = list(map(str.strip, lines))
 
+
     print(part1(lines))
+    print(part1v2(lines))
     print(part2(lines))
