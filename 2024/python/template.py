@@ -2,9 +2,9 @@ import math, string
 import re, os, sys
 import numpy as np
 import functools, itertools
+from enum import Enum, IntEnum
+from collections import Counter, defaultdict
 from pprint import pprint
-from collections import Counter
-from collections import defaultdict
 
 sys.path.append('..')
 from utils import custom_timer
