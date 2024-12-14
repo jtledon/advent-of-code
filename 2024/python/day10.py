@@ -33,26 +33,43 @@ def getPossibleStepsPt1(board, pos):
 # @custom_timer
 def part1(lines):
     matrix = [ [ c if c == '.' else int(c) for c in line ] for line in lines]
-    reachablePoints = defaultdict(set)
-    reachablePoints[0] = { (i, j) for i in range(len(lines)) for j in range(len(lines[i])) if (matrix[i][j] == 0) }
+    trailheadPaths = { (i, j): defaultdict(set) for i in range(len(lines)) for j in range(len(lines[i])) if (matrix[i][j] == 0) }
+    # pprint(trailheadPaths)
 
-    # can either do this using bfs and keep a set with the most recently visited new locations
-    currentHeight = 0
-    while currentHeight < 9:
-        for (i, j) in reachablePoints[currentHeight]:
-            adjacents = getPossibleStepsPt1(matrix, (i, j))
-            nextHeight = { (x, y) for x, y in adjacents if matrix[x][y] == currentHeight + 1}
-            reachablePoints[currentHeight + 1].update(nextHeight)
-        currentHeight += 1
+    for (startOptionX, startOptionY), reachablePoints in trailheadPaths.items():
+        reachablePoints[0].update({(startOptionX, startOptionY)})
+        currentHeight = 0
+        while currentHeight < 9:
+            for (i, j) in reachablePoints[currentHeight]:
+                adjacents = getPossibleStepsPt1(matrix, (i, j))
+                nextHeight = { (x, y) for x, y in adjacents if matrix[x][y] == currentHeight + 1}
+                reachablePoints[currentHeight + 1].update(nextHeight)
+            currentHeight += 1
+        # pprint(reachablePoints)
 
-    pprint(reachablePoints)
-    return len(reachablePoints[9])
+    return sum( len(pathSteps[9]) for pathSteps in trailheadPaths.values())
 
 
 
 # @custom_timer
 def part2(lines):
-    return
+    matrix = [ [ c if c == '.' else int(c) for c in line ] for line in lines]
+    trailheadPaths = { (i, j): defaultdict(set) for i in range(len(lines)) for j in range(len(lines[i])) if (matrix[i][j] == 0) }
+    # pprint(trailheadPaths)
+
+    for (startOptionX, startOptionY), reachablePoints in trailheadPaths.items():
+        reachablePoints[0].update( {  tuple([ (startOptionX, startOptionY) ])  } )
+        currentHeight = 0
+        while currentHeight < 9:
+            for path in reachablePoints[currentHeight]:
+                i, j = path[-1]
+                adjacents = getPossibleStepsPt1(matrix, (i, j))
+                nextHeight = { tuple(list(path)+[(x, y)]) for x, y in adjacents if matrix[x][y] == currentHeight + 1}
+                reachablePoints[currentHeight + 1].update(nextHeight)
+            currentHeight += 1
+        # pprint(reachablePoints)
+
+    return sum( len(pathSteps[9]) for pathSteps in trailheadPaths.values())
 
 
 
@@ -64,7 +81,7 @@ if __name__ == "__main__":
     inputFile = os.path.join(
             os.path.dirname(__file__),
             '../input-files/',
-            f'adventofcode.com_{yearNumber}_day_{dayNumber}_input.txt.test'
+            f'adventofcode.com_{yearNumber}_day_{dayNumber}_input.txt'
             )
     inputFile = os.path.normpath(inputFile)
 
