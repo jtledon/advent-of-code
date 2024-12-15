@@ -60,7 +60,6 @@ def part1(lines):
 
 
 # @custom_timer
-np.set_printoptions(threshold=np.inf)
 def part2(lines):
     robots = getRobots(lines)
     # pprint(robots)
@@ -70,36 +69,40 @@ def part2(lines):
 
     iteration = 0
     while (True):
-        # board = np.full((height, width), fill_value=' ', dtype='str')
-        board = np.zeros((height, width), dtype='int')
+        iteration += 1
+        board = np.full((height, width), fill_value=' ', dtype='str')
+        # board = np.zeros((height, width), dtype='int')
 
         for robot in robots:
             # print(robot.x + robot.y + robot.dx + robot.dy)
             robot.x = (robot.x + robot.dx) % width
             robot.y = (robot.y + robot.dy) % height
 
-            # board[robot.y][robot.x] = '#'
-            board[robot.y][robot.x] = 1
+            board[robot.y][robot.x] = '#'
+            # board[robot.y][robot.x] = 1
+
+        points = [ (robot.x, robot.y) for robot in robots]
+        if len(points) == len(set(points)):
+            # print(board)
 
         # if 500 < iteration < 126254:
-        #     print(iteration)
-        #     for line in board:
-        #         print("".join(line))
-        #     print(f'{"="*width}')
-        #     input()
+            print(iteration)
+            for line in board:
+                print("".join(line))
+            print(f'{"="*width}')
+            input()
 
-        left = board[:, :width//2+1]
-        right = board[:, width//2:]
+        # left = board[:, :width//2+1]
+        # right = board[:, width//2:]
         # print(left); print(right)
-
         # if np.array_equal(left, np.fliplr(right)):
-        sharedOnFlip = (left.flatten() == np.fliplr(right).flatten()).sum()
-        print(sharedOnFlip)
+        # sharedOnFlip = (left.flatten() == np.fliplr(right).flatten()).sum()
+        # print(sharedOnFlip)
         # if sharedOnFlip > 4850:
         #     print(board)
         #     break
 
-        iteration += 1
+        # iteration += 1
 
     return iteration
 
