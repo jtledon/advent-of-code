@@ -35,7 +35,8 @@ if __name__ == "__main__":
 
     with open(inputFile, 'r') as f:
         lines = f.readlines()
-        lines = list(map(str.strip, lines))
+        # lines = list(map(str.strip, lines))
+        lines = [ list(line.strip()) for line in lines ]
 
     print(part1(lines))
     print(part2(lines))
