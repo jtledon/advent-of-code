@@ -8,11 +8,6 @@ import (
 	"strings"
 )
 
-type Interval struct {
-	Start int
-	End   int
-}
-
 func main() {
 	_, file, _, ok := runtime.Caller(0)
 	if !ok { panic("Unable to fetch path of current file") }
