@@ -108,12 +108,12 @@ func Part1(fileContents string) int {
 	return splitterCount
 }
 
-
 func Part2(fileContents string) int {
 	fileContents = strings.TrimSpace(fileContents)
 
 	grid := turnInto2dGrid(fileContents)
-	locationsPerLevel := make(map[int][]Location)
+	locationsPerLevel := make(map[int]map[Location]int)
+
 	startLocation, _ := func(l []string) (Location, error) {
 		for col, char := range l {
 			if char == "S" {
@@ -125,20 +125,29 @@ func Part2(fileContents string) int {
 		}
 		return Location{}, fmt.Errorf("Couldnt find start location in line: %+v", l)
 	}(grid[0])
-
-	locationsPerLevel[0] = []Location{
-		startLocation,
-	}
+	locationsPerLevel[0] = make(map[Location]int)
+	locationsPerLevel[0][startLocation] = 1
 
 	for r := range grid {
-		fmt.Println(r)
-		locationsPerLevel[r+1] = make([]Location, 0)
-		for _, l := range locationsPerLevel[r] {
-			if r == len(grid) - 1 { break } // all beams made it to the last line, can stop now
-			locationsPerLevel[r+1] = append(locationsPerLevel[r+1], l.nextLocations(grid)...)
+		if r == len(grid) - 1 { break } // all beams made it to the last line, can stop now
+		locationsPerLevel[r+1] = make(map[Location]int)
+		for loc, cnt := range locationsPerLevel[r] {
+			nextLocs := loc.nextLocations(grid)
+			for _, nextLoc := range nextLocs {
+				if nextLocCnt, ok := locationsPerLevel[r+1][nextLoc]; ok { // location already exists in next level. Add 1 to the count
+					locationsPerLevel[r+1][nextLoc] = nextLocCnt + cnt
+				} else {
+					locationsPerLevel[r+1][nextLoc] = cnt
+				}
+			}
 		}
 	}
-	return len(locationsPerLevel[len(grid)-1])
+
+	total := 0
+	for _, cnt := range locationsPerLevel[len(locationsPerLevel)-1] {
+		total += cnt
+	}
+	return total
 }
 
 // ====================================================
