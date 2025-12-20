@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
@@ -12,8 +13,9 @@ import (
 func main() {
 	_, file, _, ok := runtime.Caller(0)
 	if !ok { panic("Unable to fetch path of current file") }
+
 	dir := filepath.Base(filepath.Dir(file))
-	day := string(dir[len(dir) - 1])
+	day:= regexp.MustCompile(`\d+`).FindString(dir)
 
 	filename := fmt.Sprintf("day%s.txt", day)
 	path := filepath.Join("../../", "input-files", filename)

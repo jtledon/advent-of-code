@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-var day int = 5
+var day string = "05"
 
 type Interval struct {
 	Start int
@@ -18,7 +18,7 @@ type Interval struct {
 }
 
 func main() {
-	filename := fmt.Sprintf("day%d.txt", day)
+	filename := fmt.Sprintf("day%s.txt", day)
 	path := filepath.Join("../../", "input-files", filename)
 	fileContents, err := os.ReadFile(path)
 	if err != nil {

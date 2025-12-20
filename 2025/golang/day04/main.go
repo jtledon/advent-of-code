@@ -7,13 +7,13 @@ import (
 	"strings"
 )
 
-var day int = 4
+var day string = "04"
 
 func main() {
 	// fmt.Printf("%s\n\n", "main() function being invoked!")
 	// defer fmt.Println("\nCompleted main() function")
 
-	filename := fmt.Sprintf("../../input-files/day%d.txt", day)
+	filename := fmt.Sprintf("../../input-files/day%s.txt", day)
 	fileContents, err := os.ReadFile(filename)
 	if err != nil {
 		panic(err)

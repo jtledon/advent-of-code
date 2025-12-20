@@ -23,8 +23,9 @@ func main() {
 	if !ok {
 		panic("Unable to fetch path of current file")
 	}
+
 	dir := filepath.Base(filepath.Dir(file))
-	day := string(dir[len(dir)-1])
+	day:= regexp.MustCompile(`\d+`).FindString(dir)
 
 	filename := fmt.Sprintf("day%s.txt", day)
 	path := filepath.Join("../../", "input-files", filename)

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strings"
 )
@@ -11,8 +12,9 @@ import (
 func main() {
 	_, file, _, ok := runtime.Caller(0)
 	if !ok { panic("Unable to fetch path of current file") }
+
 	dir := filepath.Base(filepath.Dir(file))
-	day := string(dir[len(dir) - 1])
+	day:= regexp.MustCompile(`\d+`).FindString(dir)
 
 	filename := fmt.Sprintf("day%s.txt", day)
 	path := filepath.Join("../../", "input-files", filename)
@@ -170,7 +172,7 @@ func Part1Broken(fileContents string) int {
 			beamLocationsByLine[0][location] = true
 		}
 	}
-	
+
 	for rowIdx := range lines {
 		if rowIdx == 0 { continue }
 		beamLocationsByLine[rowIdx] = make(map[Location]bool)

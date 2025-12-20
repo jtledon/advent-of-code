@@ -14,7 +14,7 @@ func main() {
 	fmt.Printf("%s\n\n", "main() function being invoked!")
 	defer fmt.Println("\nCompleted main() function")
 
-	filename := "../../input-files/day1.txt"
+	filename := "../../input-files/day01.txt"
 	file, err := os.Open(filename)
 	if err != nil {
 		panic(err)
